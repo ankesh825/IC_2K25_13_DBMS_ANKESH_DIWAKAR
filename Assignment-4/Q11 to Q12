@@ -1,0 +1,107 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 84
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| assignment         |
+| assignment_db      |
+| collegedb          |
+| company_db         |
+| hr                 |
+| hr_assignment      |
+| hr_db              |
+| information_schema |
+| mysql              |
+| pdb                |
+| performance_schema |
+| sys                |
++--------------------+
+12 rows in set (0.01 sec)
+
+mysql> use hr;
+Database changed
+mysql> DESC employees;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| EMPLOYEE_ID    | decimal(6,0) | NO   | PRI | 0       |       |
+| FIRST_NAME     | varchar(20)  | YES  |     | NULL    |       |
+| LAST_NAME      | varchar(25)  | NO   | MUL | NULL    |       |
+| EMAIL          | varchar(25)  | NO   | UNI | NULL    |       |
+| PHONE_NUMBER   | varchar(20)  | YES  |     | NULL    |       |
+| HIRE_DATE      | date         | NO   |     | NULL    |       |
+| JOB_ID         | varchar(10)  | NO   | MUL | NULL    |       |
+| SALARY         | decimal(8,2) | YES  |     | NULL    |       |
+| COMMISSION_PCT | decimal(2,2) | YES  |     | NULL    |       |
+| MANAGER_ID     | decimal(6,0) | YES  | MUL | NULL    |       |
+| DEPARTMENT_ID  | decimal(4,0) | YES  | MUL | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.01 sec)
+
+mysql> SELECT DISTINCT job_id FROM employees;
++------------+
+| job_id     |
++------------+
+| AC_ACCOUNT |
+| AC_MGR     |
+| AD_ASST    |
+| AD_PRES    |
+| AD_VP      |
+| FI_ACCOUNT |
+| FI_MGR     |
+| HR_REP     |
+| IT_PROG    |
+| MK_MAN     |
+| MK_REP     |
+| PR_REP     |
+| PU_CLERK   |
+| PU_MAN     |
+| SA_MAN     |
++------------+
+15 rows in set (0.00 sec)
+
+mysql> -- Q11. Write a query to get the average salary for each job ID excluding programmer.
+mysql> SELECT job_id, AVG(salary) AS average_salary FROM employees WHERE job_id <> 'IT_PROG' GROUP BY job_id;
++------------+----------------+
+| job_id     | average_salary |
++------------+----------------+
+| AC_ACCOUNT |    8300.000000 |
+| AC_MGR     |   12000.000000 |
+| AD_ASST    |    4400.000000 |
+| AD_PRES    |   24000.000000 |
+| AD_VP      |   17000.000000 |
+| FI_ACCOUNT |    7920.000000 |
+| FI_MGR     |   12000.000000 |
+| HR_REP     |    6500.000000 |
+| MK_MAN     |   13000.000000 |
+| MK_REP     |    6000.000000 |
+| PR_REP     |   10000.000000 |
+| PU_CLERK   |    3100.000000 |
+| PU_MAN     |   11000.000000 |
+| SA_MAN     |   13750.000000 |
++------------+----------------+
+14 rows in set (0.01 sec)
+
+mysql> -- Q12. Write a query to get the total salary, maximum, minimum, average salary of employees (job ID wise), for department ID 90 only.
+mysql> SELECT job_id, SUM(salary) AS total_salary,   MAX(salary) AS maximum_salary,  MIN(salary) AS minimum_salary,  AVG(salary) AS average_salary FROM employees WHERE department_id = 90 GROUP BY job_id;
++---------+--------------+----------------+----------------+----------------+
+| job_id  | total_salary | maximum_salary | minimum_salary | average_salary |
++---------+--------------+----------------+----------------+----------------+
+| AD_PRES |     24000.00 |       24000.00 |       24000.00 |   24000.000000 |
+| AD_VP   |     34000.00 |       17000.00 |       17000.00 |   17000.000000 |
++---------+--------------+----------------+----------------+----------------+
+2 rows in set (0.01 sec)
+
+mysql>
