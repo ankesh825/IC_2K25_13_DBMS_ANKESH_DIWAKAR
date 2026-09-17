@@ -1,0 +1,47 @@
+mysql> -- Q13. Write a query to get the job ID and maximum salary of the employees where maximum salary is greater than or equal to $4000.
+mysql> SELECT job_id, MAX(salary) AS maximum_salary FROM employees GROUP BY job_id HAVING MAX(salary) >= 4000;
++------------+----------------+
+| job_id     | maximum_salary |
++------------+----------------+
+| AC_ACCOUNT |        8300.00 |
+| AC_MGR     |       12000.00 |
+| AD_ASST    |        4400.00 |
+| AD_PRES    |       24000.00 |
+| AD_VP      |       17000.00 |
+| FI_ACCOUNT |        9000.00 |
+| FI_MGR     |       12000.00 |
+| HR_REP     |        6500.00 |
+| IT_PROG    |        9000.00 |
+| MK_MAN     |       13000.00 |
+| MK_REP     |        6000.00 |
+| PR_REP     |       10000.00 |
+| PU_MAN     |       11000.00 |
+| SA_MAN     |       14000.00 |
++------------+----------------+
+14 rows in set (0.00 sec)
+
+mysql> -- Q14. Write a query to get the average salary for all departments employing more than 10 employees.
+mysql> SELECT department_id, AVG(salary) AS average_salary FROM employees GROUP BY department_id HAVING COUNT(*) > 10;
+Empty set (0.00 sec)
+
+mysql> SELECT department_id, AVG(salary) AS average_salary FROM employees GROUP BY department_id HAVING COUNT(*) > 10;
+Empty set (0.00 sec)
+
+mysql> SELECT department_id, COUNT(*) AS employee_count FROM employees GROUP BY department_id;
++---------------+----------------+
+| department_id | employee_count |
++---------------+----------------+
+|            10 |              1 |
+|            20 |              2 |
+|            30 |              2 |
+|            40 |              1 |
+|            60 |              5 |
+|            70 |              1 |
+|            80 |              2 |
+|            90 |              3 |
+|           100 |              6 |
+|           110 |              2 |
++---------------+----------------+
+10 rows in set (0.00 sec)
+
+mysql>
