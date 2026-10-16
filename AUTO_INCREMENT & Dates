@@ -1,0 +1,297 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 16
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE auto_date_db;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> CREATE TABLE Persons (
+    ->     Personid INT AUTO_INCREMENT PRIMARY KEY,
+    ->     LastName VARCHAR(255) NOT NULL,
+    ->     FirstName VARCHAR(255),
+    ->     Age INT
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> USE auto_date_db;
+Database changed
+mysql> CREATE TABLE Persons (
+    ->     Personid INT AUTO_INCREMENT PRIMARY KEY,
+    ->     LastName VARCHAR(255) NOT NULL,
+    ->     FirstName VARCHAR(255),
+    ->     Age INT
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql>
+mysql> DESC Persons;
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| Personid  | int          | NO   | PRI | NULL    | auto_increment |
+| LastName  | varchar(255) | NO   |     | NULL    |                |
+| FirstName | varchar(255) | YES  |     | NULL    |                |
+| Age       | int          | YES  |     | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+4 rows in set (0.03 sec)
+
+mysql> INSERT INTO Persons (FirstName, LastName, Age)
+    -> VALUES ('Lars', 'Monsen', 25);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO Persons (FirstName, LastName, Age)
+    -> VALUES
+    -> ('Ankesh', 'Diwakar', 19),
+    -> ('Rahul', 'Sharma', 21),
+    -> ('Priya', 'Verma', 20);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Persons;
++----------+----------+-----------+------+
+| Personid | LastName | FirstName | Age  |
++----------+----------+-----------+------+
+|        1 | Monsen   | Lars      |   25 |
+|        2 | Diwakar  | Ankesh    |   19 |
+|        3 | Sharma   | Rahul     |   21 |
+|        4 | Verma    | Priya     |   20 |
++----------+----------+-----------+------+
+4 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Persons AUTO_INCREMENT = 100;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Persons (FirstName, LastName, Age)
+    -> VALUES ('Aman', 'Patel', 22);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM Persons;
++----------+----------+-----------+------+
+| Personid | LastName | FirstName | Age  |
++----------+----------+-----------+------+
+|        1 | Monsen   | Lars      |   25 |
+|        2 | Diwakar  | Ankesh    |   19 |
+|        3 | Sharma   | Rahul     |   21 |
+|        4 | Verma    | Priya     |   20 |
+|      100 | Patel    | Aman      |   22 |
++----------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE Orders (
+    ->     OrderId INT AUTO_INCREMENT PRIMARY KEY,
+    ->     ProductName VARCHAR(255) NOT NULL,
+    ->     OrderDate DATE
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql> ('Geitost', '2025-11-11'),
+    -> ('Camembert Pierrot', '2025-11-09'),
+    -> ('Mozzarella di Giovanni', '2025-11-11'),
+    -> ('Mascarpone Fabioli', '2025-10-29');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''Geitost', '2025-11-11'),
+('Camembert Pierrot', '2025-11-09'),
+('Mozzarella di G' at line 1
+mysql> INSERT INTO Orders (ProductName, OrderDate)
+    -> VALUES
+    -> ('Geitost', '2025-11-11'),
+    -> ('Camembert Pierrot', '2025-11-09'),
+    -> ('Mozzarella di Giovanni', '2025-11-11'),
+    -> ('Mascarpone Fabioli', '2025-10-29');
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SELECT * FROM Orders;
++---------+------------------------+------------+
+| OrderId | ProductName            | OrderDate  |
++---------+------------------------+------------+
+|       1 | Geitost                | 2025-11-11 |
+|       2 | Camembert Pierrot      | 2025-11-09 |
+|       3 | Mozzarella di Giovanni | 2025-11-11 |
+|       4 | Mascarpone Fabioli     | 2025-10-29 |
++---------+------------------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Orders
+    -> WHERE OrderDate = '2025-11-11';
++---------+------------------------+------------+
+| OrderId | ProductName            | OrderDate  |
++---------+------------------------+------------+
+|       1 | Geitost                | 2025-11-11 |
+|       3 | Mozzarella di Giovanni | 2025-11-11 |
++---------+------------------------+------------+
+2 rows in set (0.02 sec)
+
+mysql>
+mysql> SELECT * FROM Orders
+    -> WHERE OrderDate = '2025-11-09';
++---------+-------------------+------------+
+| OrderId | ProductName       | OrderDate  |
++---------+-------------------+------------+
+|       2 | Camembert Pierrot | 2025-11-09 |
++---------+-------------------+------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE OrdersWithTime (
+    ->     OrderId INT AUTO_INCREMENT PRIMARY KEY,
+    ->     ProductName VARCHAR(255) NOT NULL,
+    ->     OrderDate DATETIME
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO OrdersWithTime (ProductName, OrderDate)
+    -> VALUES
+    -> ('Geitost', '2025-11-11 13:23:44'),
+    -> ('Camembert Pierrot', '2025-11-09 15:45:21'),
+    -> ('Mozzarella di Giovanni', '2025-11-11 11:12:01'),
+    -> ('Mascarpone Fabioli', '2025-10-29 14:56:59');
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM OrdersWithTime;
++---------+------------------------+---------------------+
+| OrderId | ProductName            | OrderDate           |
++---------+------------------------+---------------------+
+|       1 | Geitost                | 2025-11-11 13:23:44 |
+|       2 | Camembert Pierrot      | 2025-11-09 15:45:21 |
+|       3 | Mozzarella di Giovanni | 2025-11-11 11:12:01 |
+|       4 | Mascarpone Fabioli     | 2025-10-29 14:56:59 |
++---------+------------------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM OrdersWithTime
+    -> WHERE OrderDate = '2025-11-11 13:23:44';
++---------+-------------+---------------------+
+| OrderId | ProductName | OrderDate           |
++---------+-------------+---------------------+
+|       1 | Geitost     | 2025-11-11 13:23:44 |
++---------+-------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> SELECT * FROM OrdersWithTime
+    -> WHERE OrderDate >= '2025-11-11 00:00:00'
+    -> AND OrderDate < '2025-11-12 00:00:00';
++---------+------------------------+---------------------+
+| OrderId | ProductName            | OrderDate           |
++---------+------------------------+---------------------+
+|       1 | Geitost                | 2025-11-11 13:23:44 |
+|       3 | Mozzarella di Giovanni | 2025-11-11 11:12:01 |
++---------+------------------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE DateExamples (
+    ->     ExampleId INT AUTO_INCREMENT PRIMARY KEY,
+    ->     BirthDate DATE,
+    ->     StartTime TIME,
+    ->     EventDateTime DATETIME,
+    ->     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ->     EventYear YEAR
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>
+mysql> -- Step 22: Insert a sample record.
+mysql> INSERT INTO DateExamples
+    -> (BirthDate, StartTime, EventDateTime, EventYear)
+    -> VALUES
+    -> ('2007-01-29', '09:30:00', '2025-11-11 13:23:44', 2025);
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql> SELECT * FROM DateExamples;
++-----------+------------+-----------+---------------------+---------------------+-----------+
+| ExampleId | BirthDate  | StartTime | EventDateTime       | CreatedAt           | EventYear |
++-----------+------------+-----------+---------------------+---------------------+-----------+
+|         1 | 2007-01-29 | 09:30:00  | 2025-11-11 13:23:44 | 2026-10-16 18:12:38 |      2025 |
++-----------+------------+-----------+---------------------+---------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATABASE();
++--------------+
+| DATABASE()   |
++--------------+
+| auto_date_db |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW TABLES;
++------------------------+
+| Tables_in_auto_date_db |
++------------------------+
+| dateexamples           |
+| orders                 |
+| orderswithtime         |
+| persons                |
++------------------------+
+4 rows in set (0.03 sec)
+
+
+#1. AUTO_INCREMENT
+- Automatically generates a unique numeric ID.
+- Usually used with PRIMARY KEY.
+- Default starting value is 1, increasing by 1.
+- Change the next starting value using:
+ALTER TABLE Persons AUTO_INCREMENT = 100;
+
+
+2. MySQL Date Data Types
+Data Type	Format
+DATE	YYYY-MM-DD
+DATETIME	YYYY-MM-DD HH:MI:SS
+TIMESTAMP	YYYY-MM-DD HH:MI:SS
+TIME	HH:MI:SS
+YEAR	YYYY or YY
+3. Important SQL Queries
+-- Create database
+CREATE DATABASE mydb;
+
+-- Select database
+USE mydb;
+
+-- Create table
+CREATE TABLE Persons (
+    Personid INT AUTO_INCREMENT PRIMARY KEY,
+    LastName VARCHAR(255) NOT NULL,
+    FirstName VARCHAR(255),
+    Age INT
+);
+
+-- Insert record
+INSERT INTO Persons (FirstName, LastName, Age)
+VALUES ('Lars', 'Monsen', 25);
+
+-- Display all records
+SELECT * FROM Persons;
+
+-- Search by date
+SELECT * FROM Orders
+WHERE OrderDate = '2025-11-11';
+
+
+4. Important point about dates
+- Date format should match the column's data type.
+- For DATE, use 'YYYY-MM-DD'.
+- For DATETIME, include the time.
+- Searching a DATETIME column using only a date may return no results because the stored value includes a time component.
+
+
+
+
+
+
+
+
+
+
+
