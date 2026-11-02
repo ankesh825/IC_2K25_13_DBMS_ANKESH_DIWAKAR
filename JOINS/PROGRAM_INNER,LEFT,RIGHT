@@ -1,0 +1,119 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> -- SQL JOIN Operations
+mysql> CREATE DATABASE join_practical;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> USE join_practical;
+Database changed
+mysql> CREATE TABLE departments (
+    ->     id INT PRIMARY KEY,
+    ->     dept_name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE employees (
+    ->     id INT PRIMARY KEY,
+    ->     em_name VARCHAR(50),
+    ->     dept_id INT,
+    ->     FOREIGN KEY (dept_id) REFERENCES departments(id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO departments VALUES (10,'HR'),(20,'IT'),(30,'Finance');
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO employees VALUES (1,'Alice',10),(2,'Bob',20),(3,'Carol',10),(4,'David',NULL);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO mentorships VALUES (1,2,'Website Redesign'),(1,3,'Data Pipeline'),(2,4,'Mobile App'),(3,4,'Analytics Dashboard');
+ERROR 1146 (42S02): Table 'join_practical.mentorships' doesn't exist
+mysql>
+mysql> SELECT * FROM departments;
++----+-----------+
+| id | dept_name |
++----+-----------+
+| 10 | HR        |
+| 20 | IT        |
+| 30 | Finance   |
++----+-----------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT * FROM employees;
++----+---------+---------+
+| id | em_name | dept_id |
++----+---------+---------+
+|  1 | Alice   |      10 |
+|  2 | Bob     |      20 |
+|  3 | Carol   |      10 |
+|  4 | David   |    NULL |
++----+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM mentorships;
+ERROR 1146 (42S02): Table 'join_practical.mentorships' doesn't exist
+mysql> CREATE TABLE mentorships (mentor_id INT, mentee_id INT, project VARCHAR(100), FOREIGN KEY (mentor_id) REFERENCES employees(id), FOREIGN KEY (mentee_id) REFERENCES employees(id));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO mentorships VALUES (1,2,'Website Redesign'),(1,3,'Data Pipeline'),(2,4,'Mobile App'),(3,4,'Analytics Dashboard');
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM mentorships;
++-----------+-----------+---------------------+
+| mentor_id | mentee_id | project             |
++-----------+-----------+---------------------+
+|         1 |         2 | Website Redesign    |
+|         1 |         3 | Data Pipeline       |
+|         2 |         4 | Mobile App          |
+|         3 |         4 | Analytics Dashboard |
++-----------+-----------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> -- INNER JOIN
+mysql> SELECT e.em_name, d.dept_name FROM employees e INNER JOIN departments d ON e.dept_id = d.id;
++---------+-----------+
+| em_name | dept_name |
++---------+-----------+
+| Alice   | HR        |
+| Bob     | IT        |
+| Carol   | HR        |
++---------+-----------+
+3 rows in set (0.03 sec)
+
+mysql> -- LEFT JOIN
+mysql> SELECT e.em_name, d.dept_name FROM employees e LEFT JOIN departments d ON e.dept_id = d.id;
++---------+-----------+
+| em_name | dept_name |
++---------+-----------+
+| Alice   | HR        |
+| Bob     | IT        |
+| Carol   | HR        |
+| David   | NULL      |
++---------+-----------+
+4 rows in set (0.02 sec)
+
+mysql> -- RIGHT JOIN
+mysql> SELECT e.em_name, d.dept_name FROM employees e RIGHT JOIN departments d ON e.dept_id = d.id;
++---------+-----------+
+| em_name | dept_name |
++---------+-----------+
+| Carol   | HR        |
+| Alice   | HR        |
+| Bob     | IT        |
+| NULL    | Finance   |
++---------+-----------+
+4 rows in set (0.02 sec)
